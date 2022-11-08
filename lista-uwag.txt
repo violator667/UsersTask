@@ -1,0 +1,38 @@
+Dzień dobry (dobry wieczór?)!
+
+Plik users.php pozostawiłem niezmieniony z uwagi na to, że funkcjonalności w nim zawarte w mojej ocenie nie powinny znajdować się w takiej formie.
+W zamian za to, przedstawiam swoje rozwiązanie w postaci kodu i poniższych spostrzeżeń.
+
+Na pierwszy rzut oka plik zawiera 3 pomocnicze funkcje jednak nie jest klasą choć używa modyfikatorów dostępu
+(public, private) jak gdyby klasą był - czyli działać nie będzie w tej formie.
+Sugerowałbym utworzenie z tego kodu klasy typu Service (np. UsersService).
+Część kodu duplikuje się w 2 osobnych funkcjach (sprawdzenie warunków dla pól z tablicy $users) - jeśli mielibyśmy
+pojedynczego usera można by użyć Request'ów w celu sprawdzenia danych przed przesłaniem ich do metody,
+albo zwyczajnie stworzyć osobne metody klasy i użyć ich wielokrotnie zamiast przepisywać w wielu miejscach. Normalnie pokusiłbybm się
+o użycie Validate, ale ciężko mi określić z takiego skrawka kodu, czy byłoby to możliwe i zasadne więc zostanę przy metodach.
+W zależności od złożoności projektu, pokusiłbym się o użycie plików językowych dla przekazywanych komunikatów -
+da to możliwość łatwej rozbudowy jeśli zajdzie taka potrzeba. Ponadto oddzieliłbym logikę i wszystkie komunikaty umieszczał
+w kontrolerze zamiast w Klasach.
+Użycie modyfikatora private dla metody sendEmail() - blokuje możliwość jej wykonania z poza klasy - a takowego wywołania nie ma
+zatem albo zmieniamy modyfikator albo używamy tej metody wewnątrz klasy.
+W kwestii wysyłania maili - to długotrwała czynność a mamy tu tablicę z 'n' ilością kont, zatem by nie czekać
+na zakończenie wysyłki wrzuciłbym maile do kolejki.
+O ile przy metodzie updateUsers(), nie musimy sprawdzać czy dany user znajduje się w bazie (zakładając,
+że nie updatujemy w ciemno tylko najpierw pobraliśmy dane z bazy) to przy metodzie storeUsers()
+wypadałoby takie sprawdzenie przeprowadzić, żeby nie duplikować kont - nie ma schematu bazy więc ciężko mi powiedzieć, czy odbywa się
+to po stronie bazy czy potrzebna jest implementacja tego w kodzie.
+Wykorzystanie fasady DB nie wydaje mi się błędem jednak osobiście użyłbym ORM modelu User, gdyby w przyszłości zaszła
+konieczność zmiany nazwy tabeli, zmienimy ją tylko w jednym miejscu w modelu zamiast szukać w kodzie każdego użycia DB dla starej tabeli.
+Z racji tego, że nie wiem jak wygląda tablica $users, ciężko mi powiedzieć czy operacja "update" się powiedzie
+(zakładam, że tablica zawiera 'id', choć nie jest to sprawdzane - a może powinno? :))
+W temacie "szyfrowania" hasła, Laravel posiada funkcjonalność Hashowania, skąd użycie MD5?
+Podobnie z polem "email" nigdzie nie ma sprawdzenia, czy rzeczywiście zawiera prawidłowy adres email.
+Na sam koniec (w temacie code-review) zwrócę uwagę, na użycie short tagów, z uwagi na to, że pomysł wycofania "<?" z użycia
+pojawił się już jakiś czas temu, sugerowałbym używanie "<?php" w zamian. Korzystająć z PSR unikałbym kończenia plików tagiem zamykającym.
+
+Celowo pominąłem pliki Laravel'a (jak np. Model, czy pliki konfiguracyjne, routing etc.) dostarczyłem jedynie to czego nie mogę wygenerować i nad czym muszę się
+"pochylić" :) w zadaniu nie było przykładu wykorzystania kodu, jednak pokusiłem się o zrobienie kontrolera aby zaprezentować
+swój tok myślenia.
+
+Pozdrawiam
+Michał Zielonka-Majka
