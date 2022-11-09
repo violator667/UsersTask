@@ -4,7 +4,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
-class SendEmailTest extends Mailable
+class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 

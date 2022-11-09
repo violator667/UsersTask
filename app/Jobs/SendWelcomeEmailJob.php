@@ -5,7 +5,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Mail\SendEmailTest;
+use App\Mail\WelcomeMail;
 use Mail;
 class SendEmailJob implements ShouldQueue
 {
@@ -27,7 +27,7 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle()
     {
-        $email = new SendEmailTest();
+        $email = new WelcomeMail();
         Mail::to($this->details['email'])->send($email);
     }
 }
